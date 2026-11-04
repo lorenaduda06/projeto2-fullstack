@@ -1,6 +1,8 @@
 import 'dotenv/config'
 
 import express from 'express'
+import cors from 'cors'
+
 import { db } from './db.js'
 
 const PORT = process.env.PORT
@@ -10,6 +12,7 @@ async function main() {
   const app = express()
 
   app.use(express.json())
+  app.use(cors({ origin: '*' }))
 
   // Conectando ao banco de dados
   await db.connect().catch((err) => {
