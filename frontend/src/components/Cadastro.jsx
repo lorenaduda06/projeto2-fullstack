@@ -14,17 +14,17 @@ export default function Cadastro() {
   function validar() {
     const e = {};
 
-    if (!form.nome.trim()) e.nome = 'Informe o nome.';
+    if (!form.nome.trim()) e.nome = "Informe o nome.";
 
-    if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) e.email = 'E-mail inválido.';
+    if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) e.email = "E-mail inválido.";
 
-    if (!cpfValido(form.cpf)) e.cpf = 'CPF inválido.';
+    if (!cpfValido(form.cpf)) e.cpf = "CPF inválido.";
 
     if (form.senha.length < 8 || !/[A-Za-z]/.test(form.senha) || !/\d/.test(form.senha)) {
-      e.senha = 'Mínimo de 8 caracteres, com letras e números.';
+      e.senha = "Mínimo de 8 caracteres, com letras e números.";
     }
       
-    if (form.senha !== form.confirmacao) e.confirmacao = 'A senha está incorreta.';
+    if (form.senha !== form.confirmacao) e.confirmacao = "A senha está incorreta.";
     
     return e;
   }
@@ -43,19 +43,19 @@ export default function Cadastro() {
     setEnviando(true);
 
     try {
-      const resp = await api.post('/auth/cadastro', {
+      const resp = await api.post("/auth/cadastro", {
         nome: form.nome.trim(),
         email: form.email.trim().toLowerCase(),
         cpf: form.cpf.replace(/\D/g, ''),
         senha: form.senha,
       });
-      navigate('/login');
+      navigate("/login");
     } catch (err) {
       if (err.dados?.campos) {
         setErros(err.dados.campos);
       }
       else {
-        setErroGeral('Não foi possível concluir o cadastro. Tente novamente.');
+        setErroGeral("Não foi possível concluir o cadastro. Tente novamente.");
       }
     } finally {
       setEnviando(false);
@@ -91,7 +91,7 @@ export default function Cadastro() {
       </label>
       {erros.confirmacao && <small>{erros.confirmacao}</small>}
 
-      <button disabled={enviando}>{enviando ? 'Cadastrando...' : 'Cadastrar'}</button>
+      <button disabled={enviando}>{enviando ? "Cadastrando..." : "Cadastrar"}</button>
       <p>Já tem conta? <Link to="/login">Entrar</Link></p>
     </form>
   );
