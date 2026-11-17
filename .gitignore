@@ -25,3 +25,5 @@
 *.sw?
 
 docker-compose.yml
+
+http.http
