@@ -107,3 +107,56 @@ Content-Type: application/json
 ### Deletar Usuário por ID
 DELETE {{baseUrl}}/users/{{userId}} HTTP/1.1
 Authorization: Bearer {{token}}
+
+###
+### ==============================================================================
+### LANÇAMENTOS FINANCEIROS (/transactions)
+### ================================================================================
+
+@transactionId = {{createTransaction.response.body.id}}
+@categoryId = adc3c563-cee5-4680-a356-de96e1b81683
+@sourceDestinationId = adc3c563-cee5-4680-a356-de96e1b81683
+
+### Criar lançamento
+# @name createTransaction
+POST {{baseUrl}}/transactions HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "categoryId": "{{categoryId}}",
+  "sourceDestinationId": "{{sourceDestinationId}}",
+  "type": "expense",
+  "description": "Compra no supermercado",
+  "amount": 250.50,
+  "transactionDate": "2026-11-16",
+  "dueDate": "2026-11-20",
+  "status": "pending"
+}
+
+### Listar lançamentos com paginação e filtros
+GET {{baseUrl}}/transactions?page=1&limit=10&type=expense&status=pending HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Listar lançamentos por período e descrição
+GET {{baseUrl}}/transactions?startDate=2026-01-01&endDate=2026-12-31&search=mercado&sortBy=amount&sortOrder=DESC HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Buscar lançamento por ID
+GET {{baseUrl}}/transactions/{{transactionId}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Atualizar lançamento parcialmente
+PATCH {{baseUrl}}/transactions/{{transactionId}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "description": "Compra mensal no supermercado",
+  "amount": 300.00,
+  "status": "paid"
+}
+
+### Excluir lançamento logicamente
+DELETE {{baseUrl}}/transactions/{{transactionId}} HTTP/1.1
+Authorization: Bearer {{token}}
