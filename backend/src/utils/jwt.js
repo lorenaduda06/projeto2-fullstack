@@ -48,7 +48,7 @@ export function signToken(payload, secret, options = {}) {
 
 export function verifyToken(token, secret, options = {}) {
   if (!token || typeof token !== 'string') {
-    throw new Error('Token não fornecido ou em formato inválido');
+    throw new Error('Token not provided or invalid format');
   }
   if (!secret) {
     throw new Error('JWT secret is required');
@@ -56,7 +56,7 @@ export function verifyToken(token, secret, options = {}) {
 
   const parts = token.split('.');
   if (parts.length !== 3) {
-    throw new Error('Formato de token inválido');
+    throw new Error('Invalid token format');
   }
 
   const [encodedHeader, encodedPayload, signature] = parts;
@@ -65,11 +65,11 @@ export function verifyToken(token, secret, options = {}) {
   try {
     header = JSON.parse(base64UrlDecode(encodedHeader));
   } catch {
-    throw new Error('Header do token inválido');
+    throw new Error('Invalid token header');
   }
 
   if (header.alg !== 'HS256' || header.typ !== 'JWT') {
-    throw new Error('Algoritmo ou tipo de token não suportado');
+    throw new Error('Unsupported token algorithm or type');
   }
 
   const expectedSig = crypto
@@ -81,29 +81,29 @@ export function verifyToken(token, secret, options = {}) {
   const expectedBuf = Buffer.from(expectedSig);
 
   if (sigBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(sigBuf, expectedBuf)) {
-    throw new Error('Assinatura do token inválida');
+    throw new Error('Invalid token signature');
   }
 
   let payload;
   try {
     payload = JSON.parse(base64UrlDecode(encodedPayload));
   } catch {
-    throw new Error('Payload do token inválido');
+    throw new Error('Invalid token payload');
   }
 
   const now = Math.floor(Date.now() / 1000);
   if (payload.exp && now >= payload.exp) {
-    throw new Error('Token expirado');
+    throw new Error('Token expired');
   }
 
   const expectedIssuer = options.issuer ?? process.env.JWT_ISSUER;
   if (expectedIssuer && payload.iss !== expectedIssuer) {
-    throw new Error('Emissor (iss) do token inválido');
+    throw new Error('Invalid token issuer (iss)');
   }
 
   const expectedAudience = options.audience ?? process.env.JWT_AUDIENCE;
   if (expectedAudience && payload.aud !== expectedAudience) {
-    throw new Error('Audiência (aud) do token inválida');
+    throw new Error('Invalid token audience (aud)');
   }
 
   return payload;

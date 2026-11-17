@@ -7,9 +7,7 @@ export class AuthController {
 
   login = async (req, res, next) => {
     try {
-      const email = req.body.email;
-      const password = req.body.password;
-
+      const { email, password } = req.body;
       const result = await this.usersService.authenticate(email, password);
       return res.status(200).json(result);
     } catch (err) {
@@ -17,13 +15,9 @@ export class AuthController {
     }
   };
 
-  cadastro = async (req, res, next) => {
+  register = async (req, res, next) => {
     try {
-      const name = req.body.name;
-      const email = req.body.email;
-      const cpf = req.body.cpf;
-      const password = req.body.password;
-
+      const { name, email, cpf, password } = req.body;
       const user = await this.usersService.createUser({ name, email, cpf, password });
       return res.status(201).json(user);
     } catch (err) {

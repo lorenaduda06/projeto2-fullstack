@@ -7,12 +7,12 @@ export function createAuthMiddleware({ usersRepo = defaultUsersRepo } = {}) {
     try {
       const authHeader = req.headers.authorization;
       if (!authHeader) {
-        throw new AppError('Token de autenticação não informado', 401);
+        throw new AppError('Authentication token not provided', 401);
       }
 
       const [scheme, token] = authHeader.split(' ');
       if (scheme !== 'Bearer' || !token) {
-        throw new AppError('Formato do token inválido. Utilize "Bearer <token>"', 401);
+        throw new AppError('Invalid token format. Use "Bearer <token>"', 401);
       }
 
       const secret = process.env.JWT_SECRET;
@@ -24,17 +24,17 @@ export function createAuthMiddleware({ usersRepo = defaultUsersRepo } = {}) {
       try {
         payload = verifyToken(token, secret);
       } catch (err) {
-        throw new AppError(err.message || 'Token inválido ou expirado', 401);
+        throw new AppError(err.message || 'Invalid or expired token', 401);
       }
 
       const userId = payload.sub;
       if (!userId) {
-        throw new AppError('Token inválido: identificador do usuário ausente', 401);
+        throw new AppError('Invalid token: missing user identifier', 401);
       }
 
       const user = await usersRepo.findById(userId);
       if (!user || user.deletedAt) {
-        throw new AppError('Usuário não encontrado ou inativo', 401);
+        throw new AppError('User not found or inactive', 401);
       }
 
       req.user = user;

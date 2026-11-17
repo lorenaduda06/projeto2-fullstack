@@ -7,11 +7,7 @@ export class UsersController {
 
   create = async (req, res, next) => {
     try {
-      const name = req.body.name ?? req.body.nome;
-      const email = req.body.email;
-      const cpf = req.body.cpf;
-      const password = req.body.password ?? req.body.senha;
-
+      const { name, email, cpf, password } = req.body;
       const user = await this.usersService.createUser({ name, email, cpf, password });
       return res.status(201).json(user);
     } catch (err) {
@@ -50,10 +46,7 @@ export class UsersController {
   update = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const name = req.body.name ?? req.body.nome;
-      const email = req.body.email;
-      const cpf = req.body.cpf;
-      const password = req.body.password ?? req.body.senha;
+      const { name, email, cpf, password } = req.body;
 
       const payload = {};
       if (name !== undefined) payload.name = name;

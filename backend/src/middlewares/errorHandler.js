@@ -13,21 +13,21 @@ export function errorHandler(err, req, res, next) {
   }
 
   if (err.code === '23505') {
-    let message = 'Registro já existente';
+    let message = 'Record already exists';
     if (err.detail && err.detail.includes('email')) {
-      message = 'E-mail já cadastrado';
+      message = 'Email already registered';
     } else if (err.detail && err.detail.includes('cpf')) {
-      message = 'CPF já cadastrado';
+      message = 'CPF already registered';
     }
     return res.status(409).json({ error: message });
   }
 
   if (err.code === '23514') {
-    return res.status(400).json({ error: 'Dados inválidos fornecidos para o registro' });
+    return res.status(400).json({ error: 'Invalid data provided for record' });
   }
 
   console.error('Unhandled server error:', err);
   return res.status(500).json({
-    error: 'Ocorreu um erro interno no servidor',
+    error: 'Internal server error',
   });
 }

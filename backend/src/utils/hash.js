@@ -9,7 +9,7 @@ function getSaltRounds() {
 
 export async function hashPassword(password, rounds = getSaltRounds()) {
   if (typeof password !== 'string' || password.length === 0) {
-    throw new Error('A senha é obrigatória para gerar o hash');
+    throw new Error('Password is required to generate hash');
   }
   return bcrypt.hash(password, rounds);
 }
@@ -18,6 +18,5 @@ export async function comparePassword(password, hash) {
   if (typeof password !== 'string' || typeof hash !== 'string') {
     return false;
   }
-  
   return bcrypt.compare(password, hash);
 }
