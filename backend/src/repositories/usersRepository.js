@@ -20,14 +20,51 @@ export class UsersRepository {
 
   async create({ name, email, cpf, passwordHash }) {
     const query = `
-      INSERT INTO users (name, email, cpf, "password_hash")
-      VALUES ($1, $2, $3, $4)
-      RETURNING id, name, email, cpf, "created_at", "updated_at", "deleted_at"
+      WITH new_user AS (
+        INSERT INTO users (name, email, cpf, password_hash)
+        VALUES ($1, $2, $3, $4)
+        RETURNING id, name, email, cpf, created_at, updated_at, deleted_at
+      ),
+      default_categories AS (
+        SELECT * FROM (VALUES
+          ('Salário', 'income'),
+          ('Mobilidade', 'expense'),
+          ('Alimentação', 'expense'),
+          ('Educação', 'expense'),
+          ('Moradia', 'expense'),
+          ('Saúde', 'expense'),
+          ('Lazer', 'expense'),
+          ('Outros', 'expense')
+        ) AS categories(name, type)
+      ),
+      inserted_categories AS (
+        INSERT INTO categories (user_id, name, type, is_default)
+        SELECT new_user.id, default_categories.name, default_categories.type, TRUE
+        FROM new_user
+        CROSS JOIN default_categories
+        RETURNING id
+      ),
+      inserted_source AS (
+        INSERT INTO sources_destinations
+          (user_id, name, type, initial_balance, is_default)
+        SELECT id, 'Conta corrente', 'checking_account', 0, TRUE
+        FROM new_user
+        RETURNING id
+      )
+      SELECT id, name, email, cpf, created_at, updated_at, deleted_at
+      FROM new_user
     `;
-    const values = [name, email, cpf, passwordHash];
-    const result = await this.client.query(query, values);
+
+    const result = await this.client.query(query, [
+      name,
+      email,
+      cpf,
+      passwordHash
+    ]);
+
     return this.toPublic(result.rows[0]);
   }
+  
 
   async findByEmail(email) {
     const query = `

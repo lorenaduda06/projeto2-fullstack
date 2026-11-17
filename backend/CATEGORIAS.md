@@ -81,3 +81,12 @@ Substitua `:id` pelo ID da categoria.
 - **404 Not Found** — categoria não encontrada para o usuário autenticado.
 
 > O backend usa o usuário do token para limitar o acesso às próprias categorias; não é preciso enviar `userId` na URL.
+
+## Dados padrão criados no cadastro
+
+Ao cadastrar um usuário, o backend cria estas categorias:
+
+- Entrada: Salário
+- Saídas: Mobilidade, Alimentação, Educação, Moradia, Saúde, Lazer e Outros
+
+Também cria a fonte/destino padrão **Conta corrente**.

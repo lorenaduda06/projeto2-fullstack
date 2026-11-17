@@ -33,7 +33,8 @@ export class CategoriesRepository {
     const query = `
       SELECT id, name, type, is_default, created_at, updated_at
       FROM categories
-      WHERE user_id = $1 AND deleted_at IS NULL
+      WHERE user_id = $1
+        AND deleted_at IS NULL
       ORDER BY type, name
     `;
 
@@ -45,7 +46,9 @@ export class CategoriesRepository {
     const query = `
       SELECT id, name, type, is_default, created_at, updated_at
       FROM categories
-      WHERE id = $1 AND user_id = $2 AND deleted_at IS NULL
+      WHERE id = $1
+        AND user_id = $2
+        AND deleted_at IS NULL
       LIMIT 1
     `;
 
@@ -73,6 +76,7 @@ export class CategoriesRepository {
 
     values.push(id);
     const idPosition = values.length;
+
     values.push(userId);
     const userIdPosition = values.length;
 

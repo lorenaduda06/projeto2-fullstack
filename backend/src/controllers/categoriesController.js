@@ -27,11 +27,12 @@ export const categoriesController = {
 
   update: async (req, res, next) => {
     try {
-      const category = await categoriesService.uptadeCategory(
-        req.params.id,
-        req.user.id,
-        req.body
+      const category = await categoriesService.updateCategory(
+         req.params.id,
+         req.user.id,
+         req.body
       );
+      
       return res.status(200).json(category);
     } catch (err) {
       return next(err);

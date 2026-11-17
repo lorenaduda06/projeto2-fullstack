@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { usersRouter } from './routes/usersRoutes.js';
 import { authRouter } from './routes/authRoutes.js';
-import { categoriesRouter } from './routes/categoriesRouter.js';
+import { categoriesRouter } from './routes/categoriesRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { transactionsRouter } from './routes/transactionsRoutes.js';
 
