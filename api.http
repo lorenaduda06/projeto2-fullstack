@@ -1,0 +1,109 @@
+@baseUrl = http://localhost:3000
+
+# Variáveis para reutilização
+@token = {{login.response.body.token}}
+@userId = {{login.response.body.user.id}}
+
+### Health Check
+GET {{baseUrl}}/health HTTP/1.1
+
+###
+
+### ==============================================================================
+### ROTAS DE AUTENTICAÇÃO (/auth)
+### ==============================================================================
+
+### Login (autenticar usuário e obter token JWT)
+# @name login
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "john.doe@email.com",
+  "password": "1511"
+}
+
+###
+
+### Registro de Usuário (via /auth/register)
+POST {{baseUrl}}/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@email.com",
+  "cpf": "54962545825",
+  "password": "1511"
+}
+
+###
+
+### Registro de Usuário (alias /auth/cadastro)
+POST {{baseUrl}}/auth/cadastro HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "email": "jane.doe@email.com",
+  "cpf": "54962545825",
+  "password": "1511"
+}
+
+###
+
+### Perfil do Usuário Autenticado (via /auth/me)
+GET {{baseUrl}}/auth/me HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+### ==============================================================================
+### ROTAS DE USUÁRIOS (/users)
+### ==============================================================================
+
+### Criar Usuário (via /users)
+POST {{baseUrl}}/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@email.com",
+  "cpf": "54962545825",
+  "password": "1511"
+}
+
+###
+
+### Obter Perfil do Usuário Autenticado (via /users/me)
+GET {{baseUrl}}/users/me HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+### Listar Usuários (com filtros e paginação opcionais)
+GET {{baseUrl}}/users?page=1&limit=10&name=&email= HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+### Buscar Usuário por ID
+GET {{baseUrl}}/users/{{userId}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+### Atualizar Usuário por ID (parcial - PATCH)
+PATCH {{baseUrl}}/users/{{userId}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "John Doe Atualizado",
+  "email": "john.updated@email.com"
+}
+
+###
+
+### Deletar Usuário por ID
+DELETE {{baseUrl}}/users/{{userId}} HTTP/1.1
+Authorization: Bearer {{token}}

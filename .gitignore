@@ -26,6 +26,4 @@
 
 docker-compose.yml
 
-http.http
-
 **/tests
