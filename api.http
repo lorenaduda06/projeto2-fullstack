@@ -110,12 +110,107 @@ Authorization: Bearer {{token}}
 
 ###
 ### ==============================================================================
+### CATEGORIAS (/categorias)
+### ================================================================================
+
+@categoryId = {{createCategory.response.body.id}}
+
+### Criar categoria de despesa
+# @name createCategory
+POST {{baseUrl}}/categorias HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Alimentação",
+  "type": "expense"
+}
+
+### Criar categoria de receita
+POST {{baseUrl}}/categorias HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Salário",
+  "type": "income"
+}
+
+### Listar categorias do usuário autenticado
+GET {{baseUrl}}/categorias HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Atualizar categoria parcialmente
+PUT {{baseUrl}}/categorias/{{categoryId}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Alimentação e mercado",
+  "type": "expense"
+}
+
+### Excluir categoria logicamente
+DELETE {{baseUrl}}/categorias/{{categoryId}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+### ==============================================================================
+### ORIGENS E DESTINOS (/sources-destinations)
+### ================================================================================
+
+@sourceDestinationId = {{createSourceDestination.response.body.id}}
+
+### Criar origem ou destino
+# @name createSourceDestination
+POST {{baseUrl}}/sources-destinations HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Conta principal",
+  "type": "checking_account",
+  "description": "Minha conta bancária principal",
+  "initialBalance": 1500.00
+}
+
+### Listar origens e destinos com paginação, filtros e ordenação
+GET {{baseUrl}}/sources-destinations?page=1&limit=10&type=checking_account&orderBy=name&order=asc HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Listar somente registros padrão
+GET {{baseUrl}}/sources-destinations?isDefault=true&orderBy=createdAt&order=desc HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Buscar origem ou destino por ID
+GET {{baseUrl}}/sources-destinations/{{sourceDestinationId}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Atualizar origem ou destino parcialmente
+PATCH {{baseUrl}}/sources-destinations/{{sourceDestinationId}} HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Conta principal atualizada",
+  "description": "Conta bancária principal atualizada",
+  "initialBalance": 1600.00
+}
+
+### Definir origem ou destino como padrão
+PATCH {{baseUrl}}/sources-destinations/{{sourceDestinationId}}/default HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Excluir origem ou destino logicamente
+DELETE {{baseUrl}}/sources-destinations/{{sourceDestinationId}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+### ==============================================================================
 ### LANÇAMENTOS FINANCEIROS (/transactions)
 ### ================================================================================
 
 @transactionId = {{createTransaction.response.body.id}}
-@categoryId = adc3c563-cee5-4680-a356-de96e1b81683
-@sourceDestinationId = adc3c563-cee5-4680-a356-de96e1b81683
 
 ### Criar lançamento
 # @name createTransaction
