@@ -92,9 +92,9 @@ export class TransactionsService {
       [categoryId, sourceDestinationId, userId],
     );
     const row = result.rows[0];
-    // if (!row.category_type) throw new AppError('Category not found', 404);
-    // if (!row.source_id) throw new AppError('Source/destination not found', 404);
-    // if (row.category_type !== type) throw new AppError('Category is incompatible with transaction type', 409);
+    if (!row.category_type) throw new AppError('Category not found', 404);
+    if (!row.source_id) throw new AppError('Source/destination not found', 404);
+    if (row.category_type !== type) throw new AppError('Category is incompatible with transaction type', 409);
   }
 
   async create(userId, data) {

@@ -62,12 +62,12 @@ export class CategoriesRepository {
 
     if (fields.name !== undefined) {
       values.push(fields.name);
-      setParts.push(`name = \[{values.length}`);
+      setParts.push(`name = $${values.length}`);
     }
 
     if (fields.type !== undefined) {
       values.push(fields.type);
-      setParts.push(`type = \]{values.length}`);
+      setParts.push(`type = $${values.length}`);
     }
 
     if (setParts.length === 0) {
@@ -83,8 +83,8 @@ export class CategoriesRepository {
     const query = `
       UPDATE categories
       SET ${setParts.join(', ')}
-      WHERE id = \[{idPosition}
-        AND user_id = \]{userIdPosition}
+      WHERE id = $${idPosition}
+        AND user_id = $${userIdPosition}
         AND deleted_at IS NULL
       RETURNING id, name, type, is_default, created_at, updated_at
     `;

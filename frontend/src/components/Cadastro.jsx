@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { validarCpf } from "../services/validacoes";
+import { cpfValido } from "../services/Validacoes";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Cadastro() {
   const navigate = useNavigate();
+  const { cadastrar } = useAuth();
   const [form, setForm] = useState({ nome: "", email: "", cpf: "", senha: "", confirmacao: "" });
   const [erros, setErros] = useState({});
   const [erroGeral, setErroGeral] = useState('');
@@ -18,7 +20,7 @@ export default function Cadastro() {
 
     if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) e.email = "E-mail inválido.";
 
-    if (!validarCpf(form.cpf)) e.cpf = "CPF inválido.";
+    if (!cpfValido(form.cpf)) e.cpf = "CPF inválido.";
 
     if (form.senha.length < 8 || !/[A-Za-z]/.test(form.senha) || !/\d/.test(form.senha)) {
       e.senha = "Mínimo de 8 caracteres, com letras e números.";
@@ -44,10 +46,10 @@ export default function Cadastro() {
 
     try {
       await cadastrar({
-        nome: form.nome.trim(),
+        name: form.nome.trim(),
         email: form.email.trim().toLowerCase(),
         cpf: form.cpf.replace(/\D/g, ''),
-        senha: form.senha,
+        password: form.senha,
       });
       navigate('/login');
     } catch (err) {

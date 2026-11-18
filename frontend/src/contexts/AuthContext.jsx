@@ -12,13 +12,13 @@ export function AuthProvider({ children }) {
   });
 
   async function login(email, senha) {
-    const dados = await api.post("/auth/login", { email, senha });
+    const dados = await api.post("/auth/login", { email, password: senha });
 
-    localStorage.setItem('token', dados.token);
-    localStorage.setItem('usuario', JSON.stringify(dados.usuario));
+    localStorage.setItem('token', dados.accessToken ?? dados.token);
+    localStorage.setItem('usuario', JSON.stringify(dados.user ?? dados.usuario));
     
-    setToken(dados.token);
-    setUsuario(dados.usuario);
+    setToken(dados.accessToken ?? dados.token);
+    setUsuario(dados.user ?? dados.usuario);
   }
 
   async function cadastrar(dadosCadastro) {
@@ -39,4 +39,5 @@ export function AuthProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);
