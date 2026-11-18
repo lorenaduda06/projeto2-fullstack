@@ -62,7 +62,7 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={enviar} noValidate>
+    <form className="auth-form" onSubmit={enviar} noValidate>
       <h1>Entrar</h1>
 
       {location.state?.sessaoExpirada && (

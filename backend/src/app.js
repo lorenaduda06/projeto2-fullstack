@@ -17,6 +17,7 @@ export function createApp() {
   app.use('/auth', authRouter);
   app.use('/users', usersRouter);
   app.use('/categorias', categoriesRouter);
+  app.use('/categories', categoriesRouter);
   app.use('/transactions', transactionsRouter);
   app.use('/sources-destinations', sourcesDestinationsRouter);
   app.use('/', financialExtrasRouter);

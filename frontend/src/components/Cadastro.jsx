@@ -65,7 +65,7 @@ export default function Cadastro() {
   }
 
   return (
-    <form onSubmit={enviar} noValidate>
+    <form className="auth-form" onSubmit={enviar} noValidate>
       {erroGeral && <p role="alert">{erroGeral}</p>}
 
       <label>Nome

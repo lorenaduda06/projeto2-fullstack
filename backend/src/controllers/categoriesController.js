@@ -25,6 +25,13 @@ export const categoriesController = {
     }
   },
 
+  get: async (req, res, next) => {
+    try {
+      const category = await categoriesService.getCategory(req.params.id, req.user.id);
+      return res.status(200).json(category);
+    } catch (err) { return next(err); }
+  },
+
   update: async (req, res, next) => {
     try {
       const category = await categoriesService.updateCategory(
