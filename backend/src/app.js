@@ -5,6 +5,7 @@ import { authRouter } from './routes/authRoutes.js';
 import { categoriesRouter } from './routes/categoriesRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { transactionsRouter } from './routes/transactionsRoutes.js';
+import { sourcesDestinationsRouter } from './routes/sourcesDestinationsRoutes.js';
 
 export function createApp() {
   const app = express();
@@ -16,6 +17,7 @@ export function createApp() {
   app.use('/users', usersRouter);
   app.use('/categorias', categoriesRouter);
   app.use('/transactions', transactionsRouter);
+  app.use('/sources-destinations', sourcesDestinationsRouter);
 
   app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' });
